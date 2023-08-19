@@ -1,5 +1,5 @@
 package api
 
 func (s *Server) routes() {
-	s.recoverPanic(s.router)
+	s.router.Use(s.recoverPanic)
 }

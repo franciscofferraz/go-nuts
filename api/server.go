@@ -12,12 +12,12 @@ import (
 	"time"
 
 	"github.com/franciscofferraz/go-struct/internal/config"
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 )
 
 type Server struct {
-	router *httprouter.Router
+	router *chi.Mux
 	db     *sql.DB
 	logger *zap.SugaredLogger
 	wg     *sync.WaitGroup
@@ -26,7 +26,7 @@ type Server struct {
 
 func NewServer(logger *zap.SugaredLogger, db *sql.DB, config *config.Config) *Server {
 	server := &Server{
-		router: httprouter.New(),
+		router: chi.NewRouter(),
 		db:     db,
 		logger: logger,
 		config: config,
