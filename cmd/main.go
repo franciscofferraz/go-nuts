@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/franciscofferraz/go-struct/api"
 	"github.com/franciscofferraz/go-struct/internal/app"
 	"github.com/franciscofferraz/go-struct/internal/config"
-	"github.com/franciscofferraz/go-struct/internal/db"
+	"github.com/franciscofferraz/go-struct/internal/database"
+	"github.com/franciscofferraz/go-struct/internal/server"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
@@ -23,14 +23,14 @@ func main() {
 		app.Logger.Fatal("Failed to parse command-line flags", zap.Error(err))
 	}
 
-	db, err := db.ConnectDB(cfg)
+	db, err := database.Connect(cfg)
 	if err != nil {
 		app.Logger.Fatal("Failed to connect to the database", zap.Error(err))
 		panic(err)
 	}
 	defer db.Close()
 
-	server := api.NewServer(app.Logger, db, cfg)
+	server := server.NewServer(app.Logger, db, cfg)
 
 	err = server.Start(":8080")
 	if err != nil {

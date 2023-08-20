@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/franciscofferraz/go-struct/internal/helpers"
+	"github.com/franciscofferraz/go-struct/internal/utils"
 	"go.uber.org/zap"
 )
 
@@ -17,9 +17,9 @@ func LogError(r *http.Request, logger *zap.SugaredLogger, err error) {
 }
 
 func ErrorResponse(w http.ResponseWriter, r *http.Request, logger *zap.SugaredLogger, status int, message interface{}) {
-	env := helpers.Envelope{"error": message}
+	env := utils.Envelope{"error": message}
 
-	err := helpers.WriteJSON(w, status, env, nil, logger)
+	err := utils.WriteJSON(w, status, env, nil, logger)
 	if err != nil {
 		LogError(r, logger, err)
 		w.WriteHeader(500)

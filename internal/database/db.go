@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func ConnectDB(cfg *config.Config) (*sql.DB, error) {
+func Connect(cfg *config.Config) (*sql.DB, error) {
 	db, err := sql.Open("postgres", cfg.DB.DSN)
 	if err != nil {
 		return nil, err

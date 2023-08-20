@@ -48,7 +48,7 @@ func ParseFlags() (*Config, error) {
 	flag.IntVar(&cfg.SMTP.Port, "smtp-port", 25, os.Getenv("SMTP_PORT"))
 	flag.StringVar(&cfg.SMTP.Username, "smtp-username", os.Getenv("SMTP_USERNAME"), "SMTP username")
 	flag.StringVar(&cfg.SMTP.Password, "smtp-password", os.Getenv("SMTP_PASSWORD"), "SMTP password")
-	flag.StringVar(&cfg.SMTP.Sender, "smtp-sender", "openMovie <no-reply@openmovie.ffranciscofferraz.net>", "SMTP sender")
+	flag.StringVar(&cfg.SMTP.Sender, "smtp-sender", "openMovie <no-reply@test.user.net>", "SMTP sender")
 
 	flag.Parse()
 
