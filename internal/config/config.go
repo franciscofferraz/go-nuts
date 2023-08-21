@@ -1,12 +1,16 @@
 package config
 
 import (
+	"database/sql"
 	"flag"
 	"os"
+
+	"github.com/franciscofferraz/go-struct/internal/api/handlers"
+	"github.com/franciscofferraz/go-struct/internal/db/repositories"
 )
 
 type Config struct {
-	Port int
+	Port string
 	Env  string
 	DB   struct {
 		DSN          string
@@ -28,10 +32,12 @@ type Config struct {
 	}
 }
 
-func ParseFlags() (*Config, error) {
-	var cfg Config
+func NewConfig() *Config {
+	return &Config{}
+}
 
-	flag.IntVar(&cfg.Port, "port", 4000, "API server port")
+func (cfg *Config) ParseFlags() error {
+	flag.StringVar(&cfg.Port, "port", os.Getenv("PORT"), "API server port")
 	flag.StringVar(&cfg.Env, "env", os.Getenv("ENV"), "Environment (development|staging|production)")
 
 	flag.StringVar(&cfg.DB.DSN, "db-dsn", os.Getenv("DSN"), "PostgreSQL DSN")
@@ -50,7 +56,9 @@ func ParseFlags() (*Config, error) {
 	flag.StringVar(&cfg.SMTP.Password, "smtp-password", os.Getenv("SMTP_PASSWORD"), "SMTP password")
 	flag.StringVar(&cfg.SMTP.Sender, "smtp-sender", "openMovie <no-reply@test.user.net>", "SMTP sender")
 
-	flag.Parse()
+	return nil
+}
 
-	return &cfg, nil
+func (c *Config) InitializeHandlers(db *sql.DB) (*handlers.Handlers, error) {
+	return handlers.NewHandler(repositories.NewUserRepository(db)), nil
 }
