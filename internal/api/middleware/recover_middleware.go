@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/franciscofferraz/go-struct/internal/errors"
+	"github.com/franciscofferraz/go-struct/internal/customerrors"
 )
 
 func RecoverPanic(next http.Handler) http.Handler {
@@ -12,7 +12,7 @@ func RecoverPanic(next http.Handler) http.Handler {
 		defer func() {
 			if err := recover(); err != nil {
 				w.Header().Set("Connection", "close")
-				errors.ServerErrorResponse(w, r, fmt.Errorf("%s", err))
+				customerrors.ServerErrorResponse(w, r, fmt.Errorf("%s", err))
 
 			}
 		}()
